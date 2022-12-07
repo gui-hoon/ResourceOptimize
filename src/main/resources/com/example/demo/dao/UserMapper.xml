@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+<mapper namespace="com.example.demo.dao.UserMapper">
+    
+    <!-- 회원가입 -->
+    <insert id="saveUser" parameterType="UserVo">
+    	ALTER TABLE tb_user AUTO_INCREMENT = 0;
+        INSERT INTO tb_user
+        VALUE(0, #{userId},#{userPw},#{userName},#{userAuth},#{appendDate},#{updateDate})
+    </insert>
+    
+    <!-- 로그인 -->
+    <select id="getUserAccount" resultType="UserVo">
+        SELECT * FROM tb_user
+        WHERE userId = #{userId}
+    </select>
+    
+    <select id="selectAllUserList" resultType="UserVo">
+        SELECT * FROM tb_user
+    </select>
+  
+</mapper>

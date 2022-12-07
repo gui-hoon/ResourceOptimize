@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+<mapper namespace="com.example.demo.dao.AwsMapper">
+	<!-- select all instance -->
+    <select id="selectAllInstance" resultType="AwsDto">
+        SELECT k.num, k.accountID, i.instanceID, i.imageID, i.publicDns, i.privateDns, i.instanceType, i.architecture, i.platform, i.region
+        FROM awsconfig_key k
+        	LEFT OUTER JOIN awsconfig_id i
+        	ON k.num=i.FK_key_num
+       	ORDER BY k.num;
+    </select>
+
+    <!-- select average value resource: cpu, net, mem & statistic: avg, min, max -->
+    <select id="selectAvgVal" parameterType="string" resultType="AwsDto">
+    <![CDATA[
+    	SELECT instanceID, resource, statistic, AVG(val) AS val
+		FROM awsresource
+		WHERE instanceID="${instanceID}" AND resource="${resource}" AND statistic="${statistic}" AND times >= "${startDay}" AND times < "${endDay}"
+		GROUP BY instanceID;
+	]]>
+    </select>
+    
+    <!-- select average value resource: disk & statistic: avg, min, max -->
+    <select id="selectDiskAvgVal" parameterType="string" resultType="AwsDto">
+    <![CDATA[
+    	SELECT diskR.instanceID, diskR.diskID, diskR.diskRVal, diskW.diskWVal, diskF.diskFVal
+		FROM 
+			(
+				select instanceID, diskID, AVG(val) AS diskRVal
+				FROM awsresource_disk 
+				WHERE instanceID="${instanceID}" AND resource='DiskReadBytes' AND statistic="${statistic}" AND times >= "${startDay}" AND times < "${endDay}"
+				GROUP BY diskID
+			) AS diskR
+			LEFT JOIN 
+			(
+				select instanceID, diskID, AVG(val) AS diskWVal
+				FROM awsresource_disk 
+				WHERE instanceID="${instanceID}" AND resource='DiskWriteBytes' AND statistic="${statistic}" AND times >= "${startDay}" AND times < "${endDay}"
+				GROUP BY diskID
+			) AS diskW ON diskR.diskID=diskW.diskID
+			LEFT JOIN
+			(
+				select instanceID, diskID, AVG(val) AS diskFVal
+				FROM awsresource_disk 
+				WHERE instanceID="${instanceID}" AND resource='DiskFree' AND statistic="${statistic}" AND times >= "${startDay}" AND times < "${endDay}"
+				GROUP BY diskID
+			) AS diskF ON diskR.diskID=diskF.diskID
+	]]>
+    </select>
+    
+    <!-- select instance disk list -->
+    <select id="selectInstanceDiskList" parameterType="string" resultType="string">
+    <![CDATA[
+    	SELECT DISTINCT diskID
+		FROM awsresource_disk
+		WHERE instanceID="${instanceID}" AND times >= "${startDay}" AND times < "${endDay}";
+	]]>
+    </select>
+    
+    <!-- select instance daily detail data -->
+    <select id="selectDailyDetail" parameterType="string" resultType="AwsDto">
+    <![CDATA[
+		SELECT instanceID, resource, statistic, times, FROM_UNIXTIME(times,'%Y-%m-%d %H:%i:%s') AS dateTimes, val
+		FROM awsresource
+		WHERE instanceID="${instanceID}" AND resource="${resource}" AND statistic="${statistic}" AND times >= "${startDay}" AND times < "${endDay}";
+	]]>
+    </select>
+    
+    <!-- select instance daily detail disk data -->
+    <select id="selectDailyDiskDetail" parameterType="string" resultType="AwsDto">
+    <![CDATA[
+		SELECT instanceID, diskID, resource, statistic, times, FROM_UNIXTIME(times,'%Y-%m-%d %H:%i:%s') AS dateTimes, val
+		FROM awsresource_disk
+		WHERE instanceID="${instanceID}" AND diskID="${diskID}" AND resource="${resource}" AND statistic="${statistic}" AND times >= "${startDay}" AND times < "${endDay}";
+	]]>
+    </select>
+    
+    <!-- 조회 기간동안 총 사용 시간 계산 -->
+    <select id="calOperatingTime" parameterType="string" resultType="int">
+    <![CDATA[
+    	SELECT COUNT(a.times) AS operatingTime
+		FROM (
+					SELECT DISTINCT times
+					FROM awsresource
+					WHERE instanceID="${instanceID}" AND times >= "${startDay}" AND times < "${endDay}"
+					GROUP BY times
+		) AS a	
+	]]>
+    </select>
+    
+    
+    <!-- AWS IAM 계정 -->
+    <select id="selectAwsConfigKeyList" resultType="AwsDto">
+        SELECT num, accountID, accessKey, secretKey, region
+        FROM awsconfig_key
+        ORDER BY num ASC;
+    </select>
+    
+    <select id="selectAwsConfigKey" resultType="AwsDto">
+        SELECT num, accountID, accessKey, secretKey, region
+        FROM awsconfig_key
+        WHERE num="${num}";
+    </select>
+    
+    <select id="insertAwsConfigKey" resultType="AwsDto">
+        ALTER TABLE awsconfig_key AUTO_INCREMENT = 0;
+		INSERT INTO awsconfig_key VALUES(0, "${accountID}", "${accessKey}", "${secretKey}", "${region}");
+    </select>
+    
+    <select id="updateAwsConfigKey" resultType="AwsDto">
+		UPDATE awsconfig_key
+		SET accountID="${accountID}", accessKey="${accessKey}", secretKey="${secretKey}", region="${region}"
+		WHERE num=#{num};
+    </select>
+    
+    <select id="deleteAwsConfigKey" resultType="AwsDto">
+		DELETE FROM awsconfig_key
+		WHERE num=#{num};
+    </select>
+    
+    
+    <!-- Dynatrace 계정 -->
+    <select id="selectDynaConfigKeyList" resultType="AwsDto">
+        SELECT num, environmentID, environment, token
+        FROM dynatrace_key
+        ORDER BY num ASC;
+    </select>
+    
+    <select id="selectDynaConfigKey" resultType="AwsDto">
+        SELECT num, environmentID, environment, token
+        FROM dynatrace_key
+        WHERE num="${num}";
+    </select>
+    
+    <select id="insertDynaConfigKey" resultType="AwsDto">
+        ALTER TABLE dynatrace_key AUTO_INCREMENT = 0;
+		INSERT INTO dynatrace_key VALUES(0, "${environmentID}", "${environment}", "${token}");
+    </select>
+    
+    <select id="updateDynaConfigKey" resultType="AwsDto">
+		UPDATE dynatrace_key
+		SET environmentID="${environmentID}", environment="${environment}", token="${token}"
+		WHERE num=#{num};
+    </select>
+    
+    <select id="deleteDynaConfigKey" resultType="AwsDto">
+		DELETE FROM dynatrace_key
+		WHERE num=#{num};
+    </select>
+    
+    <!-- admin log 계정 -->
+    <select id="insertModifiedLog">
+		ALTER TABLE admin_log AUTO_INCREMENT = 0;
+		INSERT INTO admin_log VALUES(0, "${userId}", "${modifiedTable}", "${modifiedLog}", "${updateDate}");
+    </select>
+    
+    <select id="selectAdminLogList" resultType="AwsDto">
+		SELECT *
+		FROM admin_log;
+    </select>
+    
+    
+</mapper>
+
+
+
+
+
+
+
+
+
+

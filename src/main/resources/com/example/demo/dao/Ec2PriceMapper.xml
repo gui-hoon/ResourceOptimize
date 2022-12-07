@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+<mapper namespace="com.example.demo.dao.Ec2PriceMapper">
+    <!-- table ec2_pricing_comparison -->
+    
+    <select id="selectEc2Price" parameterType="string" resultType="Ec2PriceDto">
+        SELECT instanceType, IFNULL(customprice, price) AS price, operatingSys, region
+		FROM ec2_pricing_comparison
+		WHERE region=(SELECT regionname FROM region_code2name WHERE regioncode="${regioncode}") AND operatingSys="${operatingSys}" AND instanceType="${instanceType}";
+    </select>
+    
+    <select id="selectEc2RegionName" parameterType="string" resultType="string">
+    	SELECT regionname
+		FROM region_code2name
+		WHERE regioncode="${regioncode}";
+    </select>
+    
+    <select id="selectEc2PriceList" parameterType="string" resultType="Ec2PriceDto">
+        SELECT instanceType, IFNULL(customprice, price) AS price, operatingSys, region
+		FROM ec2_pricing_comparison
+		WHERE region=(SELECT regionname FROM region_code2name WHERE regioncode="${regioncode}") AND operatingSys="${operatingSys}" AND instanceType LIKE "%${instanceType}%"
+		ORDER BY price ASC;
+    </select>
+    
+    <select id="seletOnDemandList" parameterType="string" resultType="Ec2PriceDto">
+        SELECT *
+		FROM ec2_pricing_comparison
+		WHERE region="${regionname}" AND operatingSys="${operatingSys}"
+		ORDER BY instanceType ASC;
+    </select>
+    
+    <select id="selectRegionnameList" resultType="string">
+        SELECT regionname
+		FROM region_code2name;
+    </select>
+    
+    <select id="selectInstanceType" parameterType="Ec2PriceDto" resultType="Ec2PriceDto">
+        SELECT *
+        FROM ec2_pricing_comparison
+        WHERE instanceType="${instanceType}" AND operatingSys="${operatingSys}" AND region="${region}";
+    </select>
+    
+    <select id="updateCustomPrice" parameterType="Ec2PriceDto">
+        UPDATE ec2_pricing_comparison
+        SET customPrice="${customPrice}"
+        WHERE instanceType="${instanceType}" AND operatingSys="${operatingSys}" AND region="${region}";
+    </select>
+    
+</mapper>
