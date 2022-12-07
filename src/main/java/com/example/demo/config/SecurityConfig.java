@@ -23,26 +23,25 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
+        	.sessionManagement()
+        		.invalidSessionUrl("/login").and()
             .authorizeRequests()
                 .antMatchers( "/login", "/singUp", "/access_denied", "/resources/**").permitAll() // 로그인 권한은 누구나, resources파일도 모든권한
                 // USER, ADMIN 접근 허용
                 .antMatchers("/admin/**").authenticated()
-                .antMatchers("/admin/**").hasAnyRole("ADMIN")
-            .and()
-            	.formLogin()
+                .antMatchers("/admin/**").hasAnyRole("ADMIN").and()
+        	.formLogin()
                 .loginPage("/login")
                 .loginProcessingUrl("/login_proc")
                 .defaultSuccessUrl("/home")
-                .failureUrl("/access_denied") // 인증에 실패했을 때 보여주는 화면 url, 로그인 form으로 파라미터값 error=true로 보낸다.
-    		.and()
-		        .logout()
+                .failureUrl("/access_denied").and() // 인증에 실패했을 때 보여주는 화면 url, 로그인 form으로 파라미터값 error=true로 보낸다.
+    		
+	        .logout()
 		        .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
 		        .logoutSuccessUrl("/")
-		        .invalidateHttpSession(true)
-	        .and()
-        		.csrf().disable()
-	        	.headers(headers -> headers
-	                    .cacheControl(cache -> cache.disable())
+		        .invalidateHttpSession(true).and()
+    		.csrf().disable()
+	        	.headers(headers -> headers.cacheControl(cache -> cache.disable())
 	                );
 }
 
