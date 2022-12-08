@@ -83,7 +83,7 @@
               		</div>
                     <div><h1 class="mt-4">AWS Overview</h1></div> <br>
                     <div>
-                    	<input type="button" value="MonthlyRate" onClick="location.href='/home/accountID/monthlyRate'">
+                    	<input type="button" value="MonthlyCost" onClick="location.href='/home/accountID/monthlyRate'">
                    	</div> <br>
                    	
                     <div>

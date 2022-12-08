@@ -321,6 +321,11 @@ public class AwsServiceImpl implements AwsService{
 	public AwsDto getAwsConfigKey(AwsDto aws) {
 		return aMapper.selectAwsConfigKey(aws);
 	}
+	
+	@Override
+	public int awsDuplicateCheck(AwsDto aws) {
+		return aMapper.awsIdDuplicateCheck(aws);
+	}
 
 	@Override
 	public void putAwsConfigKey(AwsDto aws) {
@@ -351,6 +356,11 @@ public class AwsServiceImpl implements AwsService{
 		return aMapper.selectDynaConfigKey(aws);
 	}
 
+	@Override
+	public int dynaDuplicateCheck(AwsDto aws) {
+		return aMapper.dynaIdDuplicateCheck(aws);
+	}
+	
 	@Override
 	public void putDynaConfigKey(AwsDto aws) {
 		if (!aws.getEnvironmentID().isEmpty()) {

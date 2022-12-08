@@ -35,6 +35,7 @@ public interface AwsService {
 	// AWS IAM 계정
 	public List<AwsDto> getAwsConfigKeyList();
 	public AwsDto getAwsConfigKey(AwsDto aws);
+	public int awsDuplicateCheck (AwsDto aws);
 	public void putAwsConfigKey(AwsDto aws);
 	public void upAwsConfigKey(AwsDto aws);
 	public void delAwsConfigKey(AwsDto aws);
@@ -42,6 +43,7 @@ public interface AwsService {
 	// AWS IAM 계정
 	public List<AwsDto> getDynaConfigKeyList();
 	public AwsDto getDynaConfigKey(AwsDto aws);
+	public int dynaDuplicateCheck (AwsDto aws);
 	public void putDynaConfigKey(AwsDto aws);
 	public void upDynaConfigKey(AwsDto aws);
 	public void delDynaConfigKey(AwsDto aws);

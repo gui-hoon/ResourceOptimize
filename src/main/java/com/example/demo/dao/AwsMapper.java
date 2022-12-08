@@ -32,6 +32,7 @@ public interface AwsMapper {
 	// AWS IAM 계정
 	public List<AwsDto> selectAwsConfigKeyList();
 	public AwsDto selectAwsConfigKey(AwsDto aws);
+	public int awsIdDuplicateCheck (AwsDto aws);
 	public void insertAwsConfigKey(AwsDto aws);
 	public void updateAwsConfigKey(AwsDto aws);
 	public void deleteAwsConfigKey(AwsDto aws);
@@ -39,6 +40,7 @@ public interface AwsMapper {
 	// AWS dynatrace 계정
 	public List<AwsDto> selectDynaConfigKeyList();
 	public AwsDto selectDynaConfigKey(AwsDto aws);
+	public int dynaIdDuplicateCheck (AwsDto aws);
 	public void insertDynaConfigKey(AwsDto aws);
 	public void updateDynaConfigKey(AwsDto aws);
 	public void deleteDynaConfigKey(AwsDto aws);

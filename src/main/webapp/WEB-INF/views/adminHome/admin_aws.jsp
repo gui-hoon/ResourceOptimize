@@ -78,6 +78,11 @@
                 </nav>
                 <!-- Page content-->
                 <div class="container-fluid">
+                	<c:if test="${awsDuplicateFlag eq 1}">
+                		<script>
+					    	alert("${message}");
+					    </script>
+               		</c:if>
                     <h1 class="mt-4">Managing AWS IAM Users</h1> <br> <br> <br> <br>
                     <div style="text-align: center;">
 					    <h2>AWS</h2>

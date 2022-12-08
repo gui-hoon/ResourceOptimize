@@ -99,20 +99,19 @@ public class DatabaseConfig implements ApplicationRunner {
             
             String awsKeySql = "create table if not exists awsconfig_key ("
             		+ "num INT(11) NOT NULL AUTO_INCREMENT,"
-            		+ "accountID VARCHAR(255) NOT NULL,"
-            		+ "accessKey VARCHAR(255) NOT NULL,"
-            		+ "secretKey VARCHAR(255) NOT NULL,"
-            		+ "region VARCHAR(255) NOT NULL,"
-            		+ "UNIQUE INDEX uk_key (accessKey, secretKey, region),"
+            		+ "accountID VARCHAR(255) NULL DEFAULT NULL,"
+            		+ "accessKey VARCHAR(255) NULL DEFAULT NULL,"
+            		+ "secretKey VARCHAR(255) NULL DEFAULT NULL,"
+            		+ "region VARCHAR(255) NULL DEFAULT NULL,"
             		+ "UNIQUE INDEX uk_id (accountID),"
             		+ "PRIMARY KEY (num));";
             
             String dynaKeySql = "create table if not exists dynatrace_key ("
             		+ "num INT(11) NOT NULL AUTO_INCREMENT,"
-            		+ "environmentID VARCHAR(255) NOT NULL,"
-            		+ "environment VARCHAR(255) NOT NULL,"
-            		+ "token VARCHAR(255) NOT NULL,"
-            		+ "UNIQUE KEY uk_key (environmentID, environment, token),"
+            		+ "environmentID VARCHAR(255) NULL DEFAULT NULL,"
+            		+ "environment VARCHAR(255) NULL DEFAULT NULL,"
+            		+ "token VARCHAR(255) NULL DEFAULT NULL,"
+            		+ "UNIQUE KEY uk_key (environmentID),"
             		+ "PRIMARY KEY (num));";
             		
             String awsIDSql = "create table if not exists awsconfig_id ("

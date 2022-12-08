@@ -60,6 +60,9 @@ public class AwsDto {
 	private int operatingTime;
 	private double usageCost;
 	
+	// ID 중복 확인
+	private int success;
+	
 	// log
 	private String userId;
 	private String modifiedTable;

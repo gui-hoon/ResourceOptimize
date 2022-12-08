@@ -78,6 +78,11 @@
                 </nav>
                 <!-- Page content-->
                 <div class="container-fluid">
+                	<c:if test="${dynaDuplicateFlag eq 1}">
+                		<script>
+                			alert("${message}");
+                		</script>
+                	</c:if>
                     <h1 class="mt-4">Managing Dynatrace Access Token</h1> <br> <br> <br> <br>
                     <div style="text-align: center;">
 					    <h2>Dynatrace</h2>

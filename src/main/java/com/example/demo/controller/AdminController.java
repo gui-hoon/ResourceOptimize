@@ -28,6 +28,12 @@ public class AdminController {
 	private String selectedOs = "";
     private String selectedRegionname = "";
     
+    private int awsDuplicateFlag = 0;
+    private int dynaDuplicateFlag = 0;
+    private String message = "";
+    
+    private SimpleDateFormat format = new SimpleDateFormat ("yyyy-MM-dd HH:mm:sss");
+    
 	public AdminController(UserService u, AwsService a, Ec2PriceService ec2) {
 		this.uService=u;
 		this.aService=a;
@@ -66,6 +72,11 @@ public class AdminController {
         
         List<AwsDto> awsConfigKeyList = aService.getAwsConfigKeyList();
         model.addAttribute("awsConfigKeyList", awsConfigKeyList);
+        model.addAttribute("awsDuplicateFlag", awsDuplicateFlag);
+        model.addAttribute("message", message);
+        
+        awsDuplicateFlag = 0;
+        message = "";
         
         return "adminHome/admin_aws";
     }
@@ -89,16 +100,22 @@ public class AdminController {
 		UserVo userVo = (UserVo) authentication.getPrincipal();
         model.addAttribute("member", userVo);
         
-        SimpleDateFormat format = new SimpleDateFormat ("yyyy-MM-dd HH:mm:sss");
-        Date time = new Date();
-	    String localTime = format.format(time);
-	    
-	    String modifiedLog = "Insert AWS account. accountID: " + aws.getAccountID() + ", accessKey: " + aws.getAccessKey() +
-	    		", secretKey: " + aws.getSecretKey() + ", region: " + aws.getRegion();
-	    
-        aService.putModifiedLog(userVo.getUserId(), "awsconfig_key", modifiedLog, localTime);
-        
-        aService.putAwsConfigKey(aws);
+        if (aService.awsDuplicateCheck(aws) != 1) {
+        	aService.putAwsConfigKey(aws);
+            
+            // insert admin_log
+            Date time = new Date();
+    	    String localTime = format.format(time);
+    	    
+    	    String modifiedLog = "Insert AWS account. accountID: " + aws.getAccountID() + ", accessKey: " + aws.getAccessKey() +
+    	    		", secretKey: " + aws.getSecretKey() + ", region: " + aws.getRegion();
+    	    
+            aService.putModifiedLog(userVo.getUserId(), "awsconfig_key", modifiedLog, localTime);
+        } else {
+        	awsDuplicateFlag = 1;
+        	message = "aws accountID duplicate!";
+        	System.out.print("aws accountID duplicate");
+        }
         
         return "redirect:/admin/insertAwsKey";
     }
@@ -130,7 +147,9 @@ public class AdminController {
 		UserVo userVo = (UserVo) authentication.getPrincipal();
         model.addAttribute("member", userVo);
         
-        SimpleDateFormat format = new SimpleDateFormat ("yyyy-MM-dd HH:mm:sss");
+        aService.upAwsConfigKey(aws);
+        
+        // insert admin_log
         Date time = new Date();
 	    String localTime = format.format(time);
 	    
@@ -138,7 +157,6 @@ public class AdminController {
 	    		", secretKey: " + aws.getSecretKey() + ", region: " + aws.getRegion();
 	    
         aService.putModifiedLog(userVo.getUserId(), "awsconfig_key", modifiedLog, localTime);
-        aService.upAwsConfigKey(aws);
         
         return "redirect:/admin/updateAwsKey";
     }
@@ -159,15 +177,15 @@ public class AdminController {
     	UserVo userVo = (UserVo) authentication.getPrincipal();
         model.addAttribute("member", userVo);
         
-        SimpleDateFormat format = new SimpleDateFormat ("yyyy-MM-dd HH:mm:sss");
+        aService.delAwsConfigKey(aws);
+        
+        // insert admin_log	
         Date time = new Date();
 	    String localTime = format.format(time);
 	    
 	    String modifiedLog = "Delete AWS account. num: " +aws.getNum() + ", accountID: " + aws.getAccountID();
 	    
         aService.putModifiedLog(userVo.getUserId(), "awsconfig_key", modifiedLog, localTime);
-        
-        aService.delAwsConfigKey(aws);
         
         return "redirect:/admin/admin_aws";
     }
@@ -183,6 +201,11 @@ public class AdminController {
         
         List<AwsDto> dynaConfigKeyList = aService.getDynaConfigKeyList();
         model.addAttribute("dynaConfigKeyList", dynaConfigKeyList);
+        model.addAttribute("dynaDuplicateFlag", dynaDuplicateFlag);
+        model.addAttribute("message", message);
+        
+        dynaDuplicateFlag = 0;
+        message = "";
         
         return "adminHome/admin_dyna";
     }
@@ -206,16 +229,21 @@ public class AdminController {
 		UserVo userVo = (UserVo) authentication.getPrincipal();
         model.addAttribute("member", userVo);
         
-	 	aService.putDynaConfigKey(aws);
-	 	
-	 	SimpleDateFormat format = new SimpleDateFormat ("yyyy-MM-dd HH:mm:sss");
-        Date time = new Date();
-	    String localTime = format.format(time);
-	    
-	    String modifiedLog = "Insert Dynatrace env. environment: " + aws.getEnvironmentID() + ", url: " + aws.getEnvironment() +
-	    		", access token: " + aws.getToken();
-	    
-        aService.putModifiedLog(userVo.getUserId(), "dynatrace_key", modifiedLog, localTime);
+        if (aService.dynaDuplicateCheck(aws) != 1) {
+        	aService.putDynaConfigKey(aws);
+    	 	
+    	 	// insert admin_log	
+            Date time = new Date();
+    	    String localTime = format.format(time);
+    	    
+    	    String modifiedLog = "Insert Dynatrace env. environment: " + aws.getEnvironmentID() + ", url: " + aws.getEnvironment() +
+    	    		", access token: " + aws.getToken();
+    	    
+            aService.putModifiedLog(userVo.getUserId(), "dynatrace_key", modifiedLog, localTime);
+        } else {
+        	dynaDuplicateFlag = 1;
+        	message = "dynatrace environment duplicate!";
+        }
         
         return "redirect:/admin/insertDynaKey";
     }
@@ -250,7 +278,7 @@ public class AdminController {
         
         aService.upDynaConfigKey(aws);
         
-        SimpleDateFormat format = new SimpleDateFormat ("yyyy-MM-dd HH:mm:sss");
+        // insert admin_log
         Date time = new Date();
 	    String localTime = format.format(time);
 	    
@@ -280,7 +308,7 @@ public class AdminController {
         
         aService.delDynaConfigKey(aws);
         
-        SimpleDateFormat format = new SimpleDateFormat ("yyyy-MM-dd HH:mm:sss");
+        // insert admin_log
         Date time = new Date();
 	    String localTime = format.format(time);
 	    
@@ -351,7 +379,7 @@ public class AdminController {
         	ec2Service.upCustomPrice(ec2);
         }
         
-        SimpleDateFormat format = new SimpleDateFormat ("yyyy-MM-dd HH:mm:sss");
+        // insert admin_log
         Date time = new Date();
 	    String localTime = format.format(time);
 	    

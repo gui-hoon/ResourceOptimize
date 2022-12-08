@@ -105,6 +105,10 @@
         WHERE num="${num}";
     </select>
     
+    <select id="awsIdDuplicateCheck" parameterType="AwsDto" resultType="int">
+        SELECT EXISTS (SELECT accountID FROM awsconfig_key WHERE accountID="${accountID}" LIMIT 1) AS success;
+    </select>
+    
     <select id="insertAwsConfigKey" resultType="AwsDto">
         ALTER TABLE awsconfig_key AUTO_INCREMENT = 0;
 		INSERT INTO awsconfig_key VALUES(0, "${accountID}", "${accessKey}", "${secretKey}", "${region}");
@@ -133,6 +137,10 @@
         SELECT num, environmentID, environment, token
         FROM dynatrace_key
         WHERE num="${num}";
+    </select>
+    
+    <select id="dynaIdDuplicateCheck" parameterType="AwsDto" resultType="int">
+        SELECT EXISTS (SELECT environmentID FROM dynatrace_key WHERE environmentID="${environmentID}" LIMIT 1) AS success;
     </select>
     
     <select id="insertDynaConfigKey" resultType="AwsDto">
