@@ -104,15 +104,16 @@
 	       				</c:forEach>
 	              	</script>
 	              	<br> <br> <br>
-              		<div style="float:left; margin-left:130px; margin-right:250px;">
-              			<canvas id="twoM-pie-chart" width="400" height="400"></canvas> <br>
-              			<table><th>Total Usage Cost</th><td>${twoMTotalCost} $</td></table>
-              		</div>
-              		<div style="float:left">
-              			<canvas id="last-pie-chart" width="400" height="400"></canvas> <br>
-              			<table><th>Total Usage Cost</th><td>${lastMTotalCost} $</td></table>
-              		</div>
-	              	
+	              	<div>
+	              		<div style="float:left; margin-left:130px; margin-right:120px;">
+	              			<div><canvas id="twoM-pie-chart" width="400" height="400"></canvas></div> <br>
+	              			<div><table><th>Total Usage Cost</th><td>${twoMTotalCost} $</td></table></div>
+	              		</div>
+	              		<div style="float:left; margin-left:130px;">
+	              			<div><canvas id="last-pie-chart" width="400" height="400"></canvas></div> <br>
+	              			<div><table><th>Total Usage Cost</th><td>${lastMTotalCost} $</td></table></div>
+	              		</div>
+	              	</div> <br> <br>
                 </div>
             </div>
         </div>

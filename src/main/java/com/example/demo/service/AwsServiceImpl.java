@@ -73,16 +73,20 @@ public class AwsServiceImpl implements AwsService{
 			int operatingTime = 0;
 			double hourlyCost = 0;
 			String operatingSys = aws.getPlatform();
-			if (operatingSys.equals("Linux/UNIX")) {	operatingSys = "Linux";		}
-			
-			operatingTime = aMapper.calOperatingTime(aws.getInstanceID(), startDay, endDay);
-			hourlyCost = ec2Mapper.selectEc2Price(aws.getRegion(), operatingSys, aws.getInstanceType()).getPrice();
-			aws.setHourlyCost(hourlyCost);
-			
-			double usageCost = Math.round((hourlyCost * operatingTime)*100.0)/100.0;
-			
-			aws.setUsageCost(usageCost);
-			aws.setOperatingTime(operatingTime);
+			if (operatingSys != null) {
+				if (operatingSys.equals("Linux/UNIX")) {	
+					operatingSys = "Linux";		
+				}
+				
+				operatingTime = aMapper.calOperatingTime(aws.getInstanceID(), startDay, endDay);
+				hourlyCost = ec2Mapper.selectEc2Price(aws.getRegion(), operatingSys, aws.getInstanceType()).getPrice();
+				aws.setHourlyCost(hourlyCost);
+				
+				double usageCost = Math.round((hourlyCost * operatingTime)*100.0)/100.0;
+				
+				aws.setUsageCost(usageCost);
+				aws.setOperatingTime(operatingTime);
+			}
 			
 			if (accountID.isEmpty()) {
 				accountID = aws.getAccountID();
@@ -274,22 +278,23 @@ public class AwsServiceImpl implements AwsService{
 			String instanceType = "";
 			String recommend = aws.getRecommend();
 			
-			if (state.equals("asis")) {
-				instanceType = aws.getInstanceType();
-			} else if (state.equals("tobe")) {
-				if (recommend == null) {
+			if (platform != null) {
+				if (state.equals("asis")) {
 					instanceType = aws.getInstanceType();
+				} else if (state.equals("tobe")) {
+					if (recommend == null) {
+						instanceType = aws.getInstanceType();
+					} else {
+						instanceType = recommend;
+					}
+				}
+				
+				if (platform.equals("Linux/UNIX")) {
+					linuxList.add(instanceType);
 				} else {
-					instanceType = recommend;
+					windowList.add(instanceType);
 				}
 			}
-			
-			if (platform.equals("Linux/UNIX")) {
-				linuxList.add(instanceType);
-			} else {
-				windowList.add(instanceType);
-			}
-			
 		}
 		
 		Map<String, Integer> linuxInstanceTypeCount = new HashMap<>();

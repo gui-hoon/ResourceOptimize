@@ -146,21 +146,16 @@ public class AdminController {
 		UserVo userVo = (UserVo) authentication.getPrincipal();
         model.addAttribute("member", userVo);
         
-        if (aService.awsDuplicateCheck(aws) != 1) {
-        	aService.upAwsConfigKey(aws);
-            
-            // insert admin_log
-            Date time = new Date();
-    	    String localTime = format.format(time);
-    	    
-    	    String modifiedLog = "Modify AWS account. num: " +aws.getNum() + ", accountID: " + aws.getAccountID() + ", accessKey: " + aws.getAccessKey() +
-    	    		", secretKey: " + aws.getSecretKey() + ", region: " + aws.getRegion();
-    	    
-            aService.putModifiedLog(userVo.getUserId(), "awsconfig_key", modifiedLog, localTime);
-        } else {
-        	awsDuplicateFlag = 1;
-        	message = "aws accountID duplicate!";
-        }
+    	aService.upAwsConfigKey(aws);
+        
+        // insert admin_log
+        Date time = new Date();
+	    String localTime = format.format(time);
+	    
+	    String modifiedLog = "Modify AWS account. num: " +aws.getNum() + ", accountID: " + aws.getAccountID() + ", accessKey: " + aws.getAccessKey() +
+	    		", secretKey: " + aws.getSecretKey() + ", region: " + aws.getRegion();
+	    
+        aService.putModifiedLog(userVo.getUserId(), "awsconfig_key", modifiedLog, localTime);
          
         
         return "redirect:/admin/updateAwsKey";
@@ -281,21 +276,16 @@ public class AdminController {
 		UserVo userVo = (UserVo) authentication.getPrincipal();
         model.addAttribute("member", userVo);
         
-        if (aService.dynaDuplicateCheck(aws) != 1) {
-        	aService.upDynaConfigKey(aws);
-            
-            // insert admin_log
-            Date time = new Date();
-    	    String localTime = format.format(time);
-    	    
-    	    String modifiedLog = "Modify Dynatrace env. num: "+aws.getNum() + ", environment: " + aws.getEnvironmentID() + ", url: " + aws.getEnvironment() +
-    	    		", access token: " + aws.getToken();
-    	    
-            aService.putModifiedLog(userVo.getUserId(), "dynatrace_key", modifiedLog, localTime);
-        } else {
-        	dynaDuplicateFlag = 1;
-        	message = "dynatrace environment duplicate!";
-        }
+    	aService.upDynaConfigKey(aws);
+        
+        // insert admin_log
+        Date time = new Date();
+	    String localTime = format.format(time);
+	    
+	    String modifiedLog = "Modify Dynatrace env. num: "+aws.getNum() + ", environment: " + aws.getEnvironmentID() + ", url: " + aws.getEnvironment() +
+	    		", access token: " + aws.getToken();
+	    
+        aService.putModifiedLog(userVo.getUserId(), "dynatrace_key", modifiedLog, localTime);
         
         
         return "redirect:/admin/updateDynaKey";
