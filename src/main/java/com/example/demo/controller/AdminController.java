@@ -447,6 +447,13 @@ public class AdminController {
         // update
         aService.upProblemThreshold(th_name, val);
         
+        // insert admin_log
+        Date time = new Date();
+	    String localTime = format.format(time);
+	    
+	    String modifiedLog = "modify Threshold setting. column: " + th_name + ", val: " + val;
+	    
+        aService.putModifiedLog(userVo.getUserId(), "setting", modifiedLog, localTime);
         return "redirect:/admin/updateThreshold";
     }
 	
