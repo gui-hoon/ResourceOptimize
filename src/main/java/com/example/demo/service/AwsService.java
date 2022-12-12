@@ -51,4 +51,8 @@ public interface AwsService {
 	// admin 수정 로그
 	public void putModifiedLog(String userId, String modifiedTable, String modifiedLog, String updateDate);
 	public List<AwsDto> getAdminLogList();
+	
+	// setting
+	public AwsDto getProblemThreshold();
+	public void upProblemThreshold(String thName, String val);
 }

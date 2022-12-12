@@ -9,9 +9,9 @@
         <meta name="author" content="" />
         <title>Resource Optimizer</title>
         <!-- Favicon-->
-        <link rel="icon" type="image/x-icon" href="../assets/cloud.ico" />
+        <link rel="icon" type="image/x-icon" href="../../assets/cloud.ico" />
         <!-- Core theme CSS (includes Bootstrap)-->
-        <link href="../css/styles.css" rel="stylesheet" />
+        <link href="../../css/styles.css" rel="stylesheet" />
         <style>
 			table {
 		    	width: 100%;
@@ -79,32 +79,25 @@
                 </nav>
                 <!-- Page content-->
                 <div class="container-fluid">
-                	<c:if test="${dynaDuplicateFlag eq 1}">
-                		<script>
-                			alert("${message}");
-                		</script>
-                	</c:if>
-                    <h1 class="mt-4">Managing Dynatrace Access Token</h1> <br> <br> <br> <br>
+                    <h1 class="mt-4">Setting</h1> <br>
                     <div style="text-align: center;">
-					    <h2>Dynatrace</h2>
-					    <table style="width: 90%; margin: auto">
-					        <tr>
-					            <th style="width: 10%">번호</th>
-					            <th style="width: 20%">environment</th>
-					            <th style="width: 35%">url</th>
-					            <th style="width: 35%">access token</th>
-					        </tr>
-					        <c:forEach var="dyna" items="${dynaConfigKeyList}">
-					            <tr>
-					                <td>${dyna.num}</td>
-					                <td><a href="getDynaKey?num=${dyna.num}&environment=${dyna.environmentID}">${dyna.environmentID}</a></td>
-					                <td>${dyna.environment}</td>
-					                <td>${dyna.token}</td>
-					            </tr>
-					        </c:forEach>
-					    </table>
-					    <br>
-						<input type="button" value="계정 등록" onclick="location.href='insertDynaKeyView'">
+						<br> <h2>Threshold</h2>
+						<hr>
+						<form action="updateThreshold" method="POST">
+							<input type="hidden" name="th_name" value="${th_name}"/>
+						    <table style="width: 350px; margin: auto">
+						        <tr>
+						            <td width="150px" style="background-color: skyblue">${th_name}</td>
+						            <td><input style="width:150px" type="text" name="val" value="${val}"/></td>
+						            <td colspan="2" align="center">
+					    				<input type="submit" value="수정" onclick="if(!confirm('${th_name}의  threshold를 수정 하시겠습니까?')){return false;};">
+						            </td>
+						        </tr>
+						    </table>
+						</form>
+						<hr>
+					    <br> 
+					    <input type="button" value="Setting" onclick="location.href='admin_setting'">
 					</div>
                 </div>
             </div>
@@ -112,6 +105,6 @@
         <!-- Bootstrap core JS-->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"></script>
         <!-- Core theme JS-->
-        <script src="../js/scripts.js"></script>
+        <script src="../../js/scripts.js"></script>
     </body>
 </html>

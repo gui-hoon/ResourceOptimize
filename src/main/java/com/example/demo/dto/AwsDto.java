@@ -68,4 +68,20 @@ public class AwsDto {
 	private String modifiedTable;
 	private String admin_log;
 	private String updateDate;
+	
+	// setting
+	private int thLowCpu;
+	private int thHighCpu;
+	private long thLowNetI;
+	private long thHighNetI;
+	private long thLowNetO;
+	private long thHighNetO;
+	private int thLowMemU;
+	private int thHighMemU;
+	private long thLowDiskR;
+	private long thHighDiskR;
+	private long thLowDiskW;
+	private long thHighDiskW;
+	private int thLowDiskF;
+	private int thHighDiskF;
 }

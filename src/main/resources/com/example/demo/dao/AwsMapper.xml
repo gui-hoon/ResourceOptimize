@@ -4,6 +4,17 @@
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
     
 <mapper namespace="com.example.demo.dao.AwsMapper">
+	<!-- Settinf -->
+	<select id="selectProblemThreshold" resultType="AwsDto">
+		SELECT *
+		FROM setting;
+	</select>
+	
+	<select id="updateProblemThreshold" resultType="AwsDto">
+		UPDATE setting
+		SET ${thName}=${val};
+	</select>
+	
 	<!-- select all instance -->
     <select id="selectAllInstance" resultType="AwsDto">
         SELECT k.num, k.accountID, i.instanceID, i.imageID, i.publicDns, i.privateDns, i.instanceType, i.architecture, i.platform, i.region

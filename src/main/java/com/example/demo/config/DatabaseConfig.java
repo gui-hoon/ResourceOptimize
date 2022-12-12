@@ -114,6 +114,27 @@ public class DatabaseConfig implements ApplicationRunner {
             		+ "UNIQUE KEY uk_key (environmentID),"
             		+ "PRIMARY KEY (num));";
             		
+            String settingSql = "create table if not exists setting ("
+            		+ "num INT(11) NOT NULL AUTO_INCREMENT,"
+            		+ "thLowCpu INT,"
+            		+ "thHighCpu INT,"
+            		+ "thLowNetI BIGINT,"
+            		+ "thHighNetI BIGINT,"
+            		+ "thLowNetO BIGINT,"
+            		+ "thHighNetO BIGINT,"
+            		+ "thLowMemU INT,"
+            		+ "thHighMemU INT,"
+            		+ "thLowDiskR BIGINT,"
+            		+ "thHighDiskR BIGINT,"
+            		+ "thLowDiskW BIGINT,"
+            		+ "thHighDiskW BIGINT,"
+            		+ "thLowDiskF INT,"
+            		+ "thHighDiskF INT,"
+            		+ "PRIMARY KEY (num));\n"
+            		+ "INSERT IGNORE INTO setting SET num=1 ,thLowCpu=10, thHighCpu=80, thLowNetI=1000, thHighNetI=100000, thLowNetO=1000, thHighNetO=100000,"
+            		+ "thLowMemU=10, thHighMemU=80, thLowDiskR=1000, thHighDiskR=100000, thLowDiskW=1000, thHighDiskW=100000,"
+            		+ "thLowDiskF=10, thHighDiskF=80;";
+            
             String awsIDSql = "create table if not exists awsconfig_id ("
             		+ "FK_key_num INT(11) NULL,"
             		+ "instanceID VARCHAR(100) NOT NULL,"
@@ -153,6 +174,7 @@ public class DatabaseConfig implements ApplicationRunner {
             statement.executeUpdate(awsDiskRowSql);
             statement.executeUpdate(awsKeySql);
             statement.executeUpdate(dynaKeySql);
+            statement.executeUpdate(settingSql);
             statement.executeUpdate(awsIDSql);
             
             statement.executeUpdate(dropProcedure);

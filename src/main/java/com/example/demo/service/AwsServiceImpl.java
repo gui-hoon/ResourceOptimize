@@ -141,17 +141,19 @@ public class AwsServiceImpl implements AwsService{
 				long netOVal = aws.getNetOVal();
 				long memUVal = aws.getMemUVal();
 				
+				AwsDto threshold = getProblemThreshold();
+				
 				if ((cpuUVal + netIVal + netOVal + memUVal) != 0) {
-					if (cpuUVal < 10 || cpuUVal > 80) {
+					if (cpuUVal < threshold.getThLowCpu() || cpuUVal > threshold.getThHighCpu()) {
 						cpuUProblemList.add(aws);
 					}
-					if (netIVal < 1000 || netIVal > 100000) {
+					if (netIVal < threshold.getThLowNetI() || netIVal > threshold.getThHighNetI()) {
 						netIProblemList.add(aws);
 					}
-					if (netOVal < 1000 || netOVal > 100000) {
+					if (netOVal < threshold.getThLowNetO() || netOVal > threshold.getThHighNetO()) {
 						netOProblemList.add(aws);
 					}
-					if (memUVal < 10 || memUVal > 80) {
+					if (memUVal < threshold.getThLowMemU() || memUVal > threshold.getThHighMemU()) {
 						memUProblemList.add(aws);
 					}
 					
@@ -164,13 +166,13 @@ public class AwsServiceImpl implements AwsService{
 						oneInstanceDiskID.setNetOVal(netOVal);
 						oneInstanceDiskID.setMemUVal(memUVal);
 						
-						if (oneInstanceDiskID.getDiskRVal() < 1000 || oneInstanceDiskID.getDiskRVal() > 100000) {
+						if (oneInstanceDiskID.getDiskRVal() < threshold.getThLowDiskR() || oneInstanceDiskID.getDiskRVal() > threshold.getThHighDiskR()) {
 							diskRProblemList.add(oneInstanceDiskID);
 						}
-						if (oneInstanceDiskID.getDiskWVal() < 1000 || oneInstanceDiskID.getDiskWVal() > 100000) {
+						if (oneInstanceDiskID.getDiskWVal() < threshold.getThLowDiskW() || oneInstanceDiskID.getDiskWVal() > threshold.getThHighDiskW()) {
 							diskWProblemList.add(oneInstanceDiskID);
 						}
-						if (oneInstanceDiskID.getDiskFVal() < 10) {
+						if (oneInstanceDiskID.getDiskFVal() < threshold.getThLowDiskF()) {
 							diskFProblemList.add(oneInstanceDiskID);
 						}
 					}
@@ -395,6 +397,16 @@ public class AwsServiceImpl implements AwsService{
 	@Override
 	public List<AwsDto> getAdminLogList() {
 		return aMapper.selectAdminLogList();
+	}
+
+	@Override
+	public AwsDto getProblemThreshold() {
+		return aMapper.selectProblemThreshold();
+	}
+
+	@Override
+	public void upProblemThreshold(String thName, String val) {
+		aMapper.updateProblemThreshold(thName, val);
 	}
 
 }

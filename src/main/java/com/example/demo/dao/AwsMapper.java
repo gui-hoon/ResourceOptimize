@@ -48,6 +48,10 @@ public interface AwsMapper {
 	// admin 수정 로그
 	public void insertModifiedLog(String userId, String modifiedTable, String modifiedLog, String updateDate);
 	public List<AwsDto> selectAdminLogList();
+	
+	// setting
+	public AwsDto selectProblemThreshold();
+	public void updateProblemThreshold(String thName, String val);
 }
 
 

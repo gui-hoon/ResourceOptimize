@@ -43,6 +43,7 @@
                     <a class="list-group-item list-group-item-action list-group-item-light p-3" href="admin_aws">AWS Config</a>
                     <a class="list-group-item list-group-item-action list-group-item-light p-3" href="admin_dyna">Dynatrace Config</a>
                     <a class="list-group-item list-group-item-action list-group-item-light p-3" href="admin_OnDemand">On-Demand Pricing</a>
+                	<a class="list-group-item list-group-item-action list-group-item-light p-3" href="admin_setting">setting</a>
                 	<a class="list-group-item list-group-item-action list-group-item-light p-3" href="admin_log">LOG</a>
                 </div>
             </div>

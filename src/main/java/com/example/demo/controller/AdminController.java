@@ -415,4 +415,46 @@ public class AdminController {
         
         return "adminHome/admin_log";
     }
+	
+	// setting threshold
+	@RequestMapping(value="/admin_setting", method = RequestMethod.GET)
+    public String setThreshold(Model model, Authentication authentication){
+		UserVo userVo = (UserVo) authentication.getPrincipal();
+        model.addAttribute("member", userVo);
+        
+        AwsDto problemThreshold = aService.getProblemThreshold();
+        model.addAttribute("problemThreshold", problemThreshold);
+        
+        return "adminHome/admin_setting";
+    }
+	
+	@RequestMapping("/getThreshold")
+    public String getThreshold(Model model, Authentication authentication, String th_name, String val) {
+		UserVo userVo = (UserVo) authentication.getPrincipal();
+        model.addAttribute("member", userVo);
+
+        model.addAttribute("th_name", th_name);
+        model.addAttribute("val", val);
+        
+        return "adminHome/getThreshold";
+    }
+	
+	@PostMapping("/updateThreshold")
+    public String updateThreshold(Model model, Authentication authentication, String th_name, String val) {
+		UserVo userVo = (UserVo) authentication.getPrincipal();
+        model.addAttribute("member", userVo);
+        
+        // update
+        aService.upProblemThreshold(th_name, val);
+        
+        return "redirect:/admin/updateThreshold";
+    }
+	
+	@RequestMapping("/updateThreshold")
+    public String updateThreshold(Model model, Authentication authentication) {
+		UserVo userVo = (UserVo) authentication.getPrincipal();
+        model.addAttribute("member", userVo);
+        
+        return "redirect:/admin/admin_setting";
+    }
 }
