@@ -20,8 +20,13 @@ public class HomeController {
 	}
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public String home(Model model) {
-		return "redirect:/login";
+	public String home(Model model, Authentication authentication) {
+		UserVo userVo = (UserVo) authentication.getPrincipal();
+		if (userVo == null) {
+			return "redirect:/login";
+		} else {
+			return "redirect:/home";
+		}
 	}
 	
 	@GetMapping("/login")
