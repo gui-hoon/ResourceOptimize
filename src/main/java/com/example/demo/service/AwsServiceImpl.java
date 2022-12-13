@@ -172,7 +172,7 @@ public class AwsServiceImpl implements AwsService{
 						if (oneInstanceDiskID.getDiskWVal() < threshold.getThLowDiskW() || oneInstanceDiskID.getDiskWVal() > threshold.getThHighDiskW()) {
 							diskWProblemList.add(oneInstanceDiskID);
 						}
-						if (oneInstanceDiskID.getDiskFVal() < threshold.getThLowDiskF()) {
+						if (oneInstanceDiskID.getDiskFVal() != -1 && oneInstanceDiskID.getDiskFVal() < threshold.getThLowDiskF()) {
 							diskFProblemList.add(oneInstanceDiskID);
 						}
 					}

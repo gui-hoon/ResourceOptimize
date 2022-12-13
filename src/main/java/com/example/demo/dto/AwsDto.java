@@ -42,7 +42,7 @@ public class AwsDto {
 	private List<AwsDto> diskList;
 	private long diskRVal;
 	private long diskWVal;
-	private long diskFVal;
+	private long diskFVal = -1;
 	private long netIVal;
 	private long netOVal;
 	private long memUVal;
