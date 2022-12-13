@@ -117,7 +117,14 @@
 		                    		<td>${m.netIVal}&nbsp Byte</td>
 		                    		<td>${m.netOVal}&nbsp Byte</td>
 		                    		<td>${m.diskCount}&nbsp Unit</td>
-	                    			<td>${m.memUVal}&nbsp %</td>
+                    				<c:choose>
+                    					<c:when test="${m.memUVal eq -1}">
+                    						<td>NO DATA</td>
+                    					</c:when>
+                    					<c:otherwise>
+                    						<td>${m.memUVal}&nbsp %</td>
+                    					</c:otherwise>
+                    				</c:choose>
 	                    			<td>${m.operatingTime}&nbsp h</td>
 	                    			<td>${m.usageCost}&nbsp $</td>
 		                   		</tr>	

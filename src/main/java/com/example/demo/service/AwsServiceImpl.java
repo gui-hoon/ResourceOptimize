@@ -153,8 +153,10 @@ public class AwsServiceImpl implements AwsService{
 					if (netOVal < threshold.getThLowNetO() || netOVal > threshold.getThHighNetO()) {
 						netOProblemList.add(aws);
 					}
-					if (memUVal < threshold.getThLowMemU() || memUVal > threshold.getThHighMemU()) {
-						memUProblemList.add(aws);
+					if (memUVal != -1) {
+						if (memUVal < threshold.getThLowMemU() || memUVal > threshold.getThHighMemU()) {
+							memUProblemList.add(aws);
+						}
 					}
 					
 					// disk

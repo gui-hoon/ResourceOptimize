@@ -45,7 +45,7 @@ public class AwsDto {
 	private long diskFVal = -1;
 	private long netIVal;
 	private long netOVal;
-	private long memUVal;
+	private long memUVal = -1;
 	
 	private int diskCount;
 	
