@@ -113,9 +113,30 @@
 	                 			<c:forEach items="${sameAccountIDList}" var="m" varStatus="status">
 		                   		<tr>
 		                   			<td><a href="/home/accountID/${accountID}/${m.instanceID}" style="color: blue; text-decoration:none">${m.instanceID}</a></td>
-		                    		<td>${m.cpuUVal}&nbsp %</td>
-		                    		<td>${m.netIVal}&nbsp Byte</td>
-		                    		<td>${m.netOVal}&nbsp Byte</td>
+		                    		<c:choose>
+                    					<c:when test="${m.cpuUVal eq -1}">
+                    						<td>NO DATA</td>
+                    					</c:when>
+                    					<c:otherwise>
+                    						<td>${m.cpuUVal}&nbsp %</td>
+                    					</c:otherwise>
+                    				</c:choose>
+                    				<c:choose>
+                    					<c:when test="${m.netIVal eq -1}">
+                    						<td>NO DATA</td>
+                    					</c:when>
+                    					<c:otherwise>
+                    						<td>${m.netIVal}&nbsp Byte</td>
+                    					</c:otherwise>
+                    				</c:choose>
+                    				<c:choose>
+                    					<c:when test="${m.netOVal eq -1}">
+                    						<td>NO DATA</td>
+                    					</c:when>
+                    					<c:otherwise>
+                    						<td>${m.netOVal}&nbsp Byte</td>
+                    					</c:otherwise>
+                    				</c:choose>
 		                    		<td>${m.diskCount}&nbsp Unit</td>
                     				<c:choose>
                     					<c:when test="${m.memUVal eq -1}">

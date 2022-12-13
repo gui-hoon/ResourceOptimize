@@ -34,6 +34,8 @@ public class AwsServiceImpl implements AwsService{
 		
 		if(aws != null) {
 			val = aws.getVal();
+		} else {
+			val = -1;
 		}
 		
 		return val;

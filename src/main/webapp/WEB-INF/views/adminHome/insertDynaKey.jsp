@@ -104,6 +104,9 @@
 						        </tr>
 						    </table>
 						</form>
+						<hr>
+					    <br> 
+					    <input type="button" value="계정 목록" onclick="location.href='admin_dyna'">
 					</div>
                 </div>
             </div>
