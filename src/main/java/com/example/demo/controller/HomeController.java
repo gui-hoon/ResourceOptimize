@@ -21,7 +21,10 @@ public class HomeController {
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home(Model model, Authentication authentication) {
-		UserVo userVo = (UserVo) authentication.getPrincipal();
+		UserVo userVo = null;
+		if (authentication != null) {
+			userVo = (UserVo) authentication.getPrincipal();
+		}
 		if (userVo == null) {
 			return "redirect:/login";
 		} else {
