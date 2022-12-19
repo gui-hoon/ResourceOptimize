@@ -35,7 +35,7 @@ public class AwsResourceController {
 	private String localStartDay = null;
 	private String localEndDay = null;
 	private long l_startDay = Instant.now().minus(1, ChronoUnit.DAYS).getEpochSecond();
-	private long l_endDay = Instant.now().getEpochSecond();
+	private long l_endDay = Instant.now().getEpochSecond() + 86400;
 	
 	private Map<String, Double> accountUsageCostMap = new HashMap<>();
 	private Map<String, List<AwsDto>> accountIDMap = new HashMap<>(); 
@@ -75,7 +75,7 @@ public class AwsResourceController {
 		        Date d_endDay = formatter.parse(endDay);
 		        
 		        l_startDay = d_startDay.getTime()/1000;
-		        l_endDay = d_endDay.getTime()/1000;
+		        l_endDay = d_endDay.getTime()/1000 + 86400;
 	        }
         }
         
@@ -123,8 +123,6 @@ public class AwsResourceController {
 	@GetMapping(value="/accountID/monthlyRate")
 	public String selectmonthlyRate (Model model, Authentication authentication) throws ParseException {
 		UserVo userVo = (UserVo) authentication.getPrincipal();
-		model.addAttribute("startDay", localStartDay);
-		model.addAttribute("endDay", localEndDay);
 		
 		// 오늘 날짜
 		Calendar cal = Calendar.getInstance();
@@ -206,7 +204,7 @@ public class AwsResourceController {
 		        Date d_endDay = formatter.parse(endDay);
 		        
 		        l_startDay = d_startDay.getTime()/1000;
-		        l_endDay = d_endDay.getTime()/1000;
+		        l_endDay = d_endDay.getTime()/1000 + 86400;
 	        }
         }
         
@@ -246,7 +244,7 @@ public class AwsResourceController {
 		        Date d_endDay = formatter.parse(endDay);
 		        
 		        l_startDay = d_startDay.getTime()/1000;
-		        l_endDay = d_endDay.getTime()/1000;
+		        l_endDay = d_endDay.getTime()/1000 + 86400;
 	        }
         }
         
@@ -478,7 +476,7 @@ public class AwsResourceController {
 		        Date d_endDay = formatter.parse(endDay);
 		        
 		        l_startDay = d_startDay.getTime()/1000;
-		        l_endDay = d_endDay.getTime()/1000;
+		        l_endDay = d_endDay.getTime()/1000 + 86400;
 	        }
         }
         
@@ -559,7 +557,7 @@ public class AwsResourceController {
 		        Date d_endDay = formatter.parse(endDay);
 		        
 		        l_startDay = d_startDay.getTime()/1000;
-		        l_endDay = d_endDay.getTime()/1000;
+		        l_endDay = d_endDay.getTime()/1000 + 86400;
 	        }
         }
         
