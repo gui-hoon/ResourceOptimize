@@ -149,7 +149,7 @@
 				                   		<tr>
 				                   			<td>${val.resource}</td>
 				                   			<td>${val.dateTimes}</td>
-				                   			<td>${val.val}</td>
+				                   			<td>${val.val}<c:if test="${val.resource eq 'DiskFree'}"> %</c:if><c:if test="${val.resource ne 'DiskFree'}"> Bytes</c:if></td>
 				                   		</tr>
 			                   		</c:forEach>	       
 		                    		</tbody>
@@ -174,7 +174,7 @@
 	                  			<c:forEach items="${dm.value}" var="dm_val" varStatus="status">
 			                   		<tr>
 			                   			<td>${dm_val.dateTimes}</td>
-			                   			<td>${dm_val.val}</td>
+			                   			<td>${dm_val.val}<c:if test="${selectedResource eq 'Cpu' || selectedResource eq 'Memory'}"> %</c:if><c:if test="${selectedResource eq 'Network'}"> Bytes</c:if></td>
 			                   		</tr>
 		                   		</c:forEach>	       
 	                    		</tbody>
