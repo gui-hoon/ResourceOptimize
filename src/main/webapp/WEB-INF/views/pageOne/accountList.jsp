@@ -93,11 +93,9 @@
 						    <input type="date" name="endDay" id="end" value="${endDay}"> &nbsp
 						    <input type="submit" value="조회">
 						</form> <br>
-						<c:if test="${userTotalCost ne 0}">
-							<table style="width:20%; float:left;">
-								<th>Total Usage Cost</th><td>${userTotalCost} $</td>
-						    </table> <br>
-						</c:if>
+						<table style="width:20%; float:left;">
+							<th>Total Usage Cost</th><td>${userTotalCost} $</td>
+					    </table> <br>
 				    </div> <br> <br>
 					<!-- Account table -->	
 					<c:forEach items="${accountCountMap}" var="m" varStatus="status">
