@@ -146,14 +146,20 @@ public class AwsServiceImpl implements AwsService{
 				AwsDto threshold = getProblemThreshold();
 				
 				if ((cpuUVal + netIVal + netOVal + memUVal) != 0) {
-					if (cpuUVal < threshold.getThLowCpu() || cpuUVal > threshold.getThHighCpu()) {
-						cpuUProblemList.add(aws);
+					if (cpuUVal != -1) {
+						if (cpuUVal < threshold.getThLowCpu() || cpuUVal > threshold.getThHighCpu()) {
+							cpuUProblemList.add(aws);
+						}
 					}
-					if (netIVal < threshold.getThLowNetI() || netIVal > threshold.getThHighNetI()) {
-						netIProblemList.add(aws);
+					if (netIVal != -1) {
+						if (netIVal < threshold.getThLowNetI() || netIVal > threshold.getThHighNetI()) {
+							netIProblemList.add(aws);
+						}
 					}
-					if (netOVal < threshold.getThLowNetO() || netOVal > threshold.getThHighNetO()) {
-						netOProblemList.add(aws);
+					if (netOVal != -1) {
+						if (netOVal < threshold.getThLowNetO() || netOVal > threshold.getThHighNetO()) {
+							netOProblemList.add(aws);
+						}
 					}
 					if (memUVal != -1) {
 						if (memUVal < threshold.getThLowMemU() || memUVal > threshold.getThHighMemU()) {
